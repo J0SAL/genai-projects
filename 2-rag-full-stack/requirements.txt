@@ -5,7 +5,7 @@ langchain-community
 langchain-google-genai
 python-dotenv
 boto3
-chromadb
+langchain-chroma
 pypdf
 tiktoken
 unstructured
