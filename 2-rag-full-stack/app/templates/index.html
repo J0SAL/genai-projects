@@ -3,75 +3,370 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Knowledge Management System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Document Q&A with Gemini</title>
+    <style>
+        :root {
+            --primary-color: #4F46E5;
+            --secondary-color: #F3F4F6;
+            --text-color: #111827;
+            --light-text-color: #6B7280;
+            --border-color: #D1D5DB;
+            --background-color: #FFFFFF;
+            --error-color: #EF4444;
+            --success-color: #10B981;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--background-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        header p {
+            margin: 4px 0 0;
+            color: var(--light-text-color);
+        }
+
+        main {
+            padding: 24px;
+        }
+
+        .upload-section {
+            margin-bottom: 24px;
+        }
+
+        .upload-section h2 {
+            font-size: 18px;
+            margin-top: 0;
+        }
+
+        #upload-form {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .file-label {
+            flex-grow: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--light-text-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-label:hover {
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #4338CA;
+        }
+
+        .btn:disabled {
+            background-color: #A5B4FC;
+            cursor: not-allowed;
+        }
+
+        #upload-status {
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        .chat-section {
+            border-top: 1px solid var(--border-color);
+            padding-top: 24px;
+        }
+
+        .chat-window {
+            height: 300px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 16px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 12px;
+            line-height: 1.5;
+        }
+
+        .user-message {
+            background-color: var(--primary-color);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 2px;
+        }
+
+        .bot-message {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            margin-right: auto;
+            border-bottom-left-radius: 2px;
+        }
+        
+        .loading-indicator {
+            display: flex;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-left-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #query-form {
+            display: flex;
+            gap: 12px;
+        }
+
+        #query-input {
+            flex-grow: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        #query-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.3);
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Knowledge Management System</h1>
-        
+
+<div class="container">
+    <header>
+        <h1>Document Q&A</h1>
+        <p>Upload a .txt or .pdf document and ask it questions.</p>
+    </header>
+
+    <main>
         <div class="upload-section">
-            <h2>Upload Documents</h2>
+            <h2>1. Upload Document</h2>
             <form id="upload-form">
-                <input type="file" id="file-input" multiple>
-                <button type="submit">Upload</button>
+                <label for="file-input" class="file-label" id="file-name">Choose a file...</label>
+                <input type="file" id="file-input" name="file" accept=".pdf,.txt">
+                <button type="submit" class="btn" id="upload-button">Upload</button>
+            </form>
+            <div id="upload-status"></div>
+        </div>
+
+        <div class="chat-section">
+            <h2>2. Ask Questions</h2>
+            <div class="chat-window" id="chat-window">
+                <div class="message bot-message">Hello! Please upload a document to get started.</div>
+            </div>
+            <form id="query-form">
+                <input type="text" id="query-input" placeholder="Type your question here..." autocomplete="off" disabled>
+                <button type="submit" class="btn" id="query-button" disabled>Send</button>
             </form>
         </div>
+    </main>
+</div>
 
-        <div class="query-section">
-            <h2>Ask Questions</h2>
-            <textarea id="question-input" placeholder="Enter your question..."></textarea>
-            <button id="submit-question">Ask</button>
-        </div>
+<script>
+    const uploadForm = document.getElementById('upload-form');
+    const fileInput = document.getElementById('file-input');
+    const fileNameLabel = document.getElementById('file-name');
+    const uploadButton = document.getElementById('upload-button');
+    const uploadStatus = document.getElementById('upload-status');
 
-        <div class="response-section">
-            <h2>Response</h2>
-            <div id="response-content"></div>
-        </div>
-    </div>
+    const queryForm = document.getElementById('query-form');
+    const queryInput = document.getElementById('query-input');
+    const queryButton = document.getElementById('query-button');
+    const chatWindow = document.getElementById('chat-window');
 
-    <script>
-        document.getElementById('upload-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData();
-            const files = document.getElementById('file-input').files;
-            
-            for (let file of files) {
-                formData.append('file', file);
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            fileNameLabel.textContent = fileInput.files[0].name;
+            fileNameLabel.style.color = 'var(--text-color)';
+        } else {
+            fileNameLabel.textContent = 'Choose a file...';
+            fileNameLabel.style.color = 'var(--light-text-color)';
+        }
+    });
+
+    uploadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (fileInput.files.length === 0) {
+            showStatus('Please select a file first.', 'error');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        setLoading(uploadButton, true);
+        showStatus('Uploading and processing...', 'loading');
+
+        try {
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                showStatus(`Successfully processed ${result.chunks_processed} chunks. You can now ask questions.`, 'success');
+                queryInput.disabled = false;
+                queryButton.disabled = false;
+                addMessage('You can now ask questions about the document.', 'bot');
+            } else {
+                throw new Error(result.error || 'An unknown error occurred.');
             }
+        } catch (error) {
+            showStatus(`Error: ${error.message}`, 'error');
+        } finally {
+            setLoading(uploadButton, false);
+        }
+    });
 
-            try {
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await response.json();
-                alert(result.message || result.error);
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error uploading files');
-            }
-        });
+    queryForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const question = queryInput.value.trim();
+        if (!question) return;
 
-        document.getElementById('submit-question').addEventListener('click', async () => {
-            const question = document.getElementById('question-input').value;
-            
-            try {
-                const response = await fetch('/query', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ question })
-                });
-                const result = await response.json();
-                document.getElementById('response-content').textContent = 
-                    result.response || result.error;
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error getting response');
+        addMessage(question, 'user');
+        queryInput.value = '';
+        setLoading(queryButton, true);
+        queryInput.disabled = true;
+        
+        addMessage('', 'bot', true); // Add a loading indicator
+
+        try {
+            const response = await fetch('/query', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question: question }),
+            });
+
+            const result = await response.json();
+            const botMessageContainer = document.querySelector('.bot-message.loading-indicator');
+
+            if (response.ok) {
+                botMessageContainer.innerHTML = result.response;
+            } else {
+                botMessageContainer.innerHTML = `Error: ${result.error || 'Failed to get a response.'}`;
+                botMessageContainer.style.color = 'var(--error-color)';
             }
-        });
-    </script>
+            botMessageContainer.classList.remove('loading-indicator');
+
+        } catch (error) {
+            const botMessageContainer = document.querySelector('.bot-message.loading-indicator');
+            botMessageContainer.innerHTML = `Error: ${error.message}`;
+            botMessageContainer.style.color = 'var(--error-color)';
+            botMessageContainer.classList.remove('loading-indicator');
+        } finally {
+            setLoading(queryButton, false);
+            queryInput.disabled = false;
+            queryInput.focus();
+        }
+    });
+
+    function showStatus(message, type) {
+        uploadStatus.innerHTML = '';
+        if (type === 'loading') {
+            const spinner = document.createElement('div');
+            spinner.className = 'spinner';
+            const text = document.createElement('span');
+            text.textContent = message;
+            uploadStatus.appendChild(spinner);
+            uploadStatus.appendChild(text);
+            uploadStatus.style.color = 'var(--light-text-color)';
+        } else {
+            uploadStatus.textContent = message;
+            uploadStatus.style.color = type === 'error' ? 'var(--error-color)' : 'var(--success-color)';
+        }
+    }
+
+    function addMessage(text, sender, isLoading = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', `${sender}-message`);
+        
+        if (isLoading) {
+            messageDiv.classList.add('loading-indicator');
+            const spinner = document.createElement('div');
+            spinner.className = 'spinner';
+            messageDiv.appendChild(spinner);
+        } else {
+            messageDiv.textContent = text;
+        }
+        
+        chatWindow.appendChild(messageDiv);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    function setLoading(button, isLoading) {
+        button.disabled = isLoading;
+        if (isLoading) {
+            button.dataset.originalText = button.innerHTML;
+            button.innerHTML = `<div class="spinner" style="width:16px; height:16px; border-left-color: white; margin: auto;"></div>`;
+        } else {
+            if (button.dataset.originalText) {
+                button.innerHTML = button.dataset.originalText;
+            }
+        }
+    }
+</script>
 </body>
 </html>
