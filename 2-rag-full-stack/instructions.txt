@@ -1,0 +1,4 @@
+ECR
+N. Virginia us-east-1
+
+310269563197.dkr.ecr.us-east-1.amazonaws.com/j0sal/rag-medicalapp
