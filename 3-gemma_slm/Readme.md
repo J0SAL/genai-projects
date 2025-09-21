@@ -2,7 +2,7 @@ reference - https://youtu.be/bLDlwcl6hbA?si=wWG7ojoNvoP1IXhg
 
 # Build a Gemma-style Small Language Model from Scratch
 
-This project provides a step-by-step implementation of a small language model (SLM) from scratch using PyTorch, as detailed in the Jupyter Notebook [`Gemma_3_270_M_Small_Language_Model_Scratch_Final.ipynb`](3-gemma_slm/Gemma_3_270_M_Small_Language_Model_Scratch_Final.ipynb). The model architecture is inspired by Google's Gemma 3, with approximately 270 million parameters. The notebook guides you through data preparation, model definition, training, and inference on the TinyStories dataset.
+This project provides a step-by-step implementation of a small language model (SLM) from scratch using PyTorch, as detailed in the Jupyter Notebook `Gemma_3_270_M_Small_Language_Model_Scratch_Final.ipynb`. The model architecture is inspired by Google's Gemma 3, with approximately 270 million parameters. The notebook guides you through data preparation, model definition, training, and inference on the TinyStories dataset.
 
 ## Features
 
