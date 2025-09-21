@@ -1,4 +1,4 @@
-FROM ./gguf_model.Q8_0.gguf
+FROM ./unsloth.Q8_0.gguf
 
 
 PARAMETER temperature 0.7
