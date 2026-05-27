@@ -1,0 +1,31 @@
+{
+  "records": [
+    {
+      "id": "SEC-2026-041",
+      "timestamp": "2026-04-18T09:14:21Z",
+      "system": "identity-provider",
+      "severity": "high",
+      "event": "Multiple failed administrator login attempts from an unfamiliar ASN",
+      "action": "Temporary conditional access block applied",
+      "owner": "security"
+    },
+    {
+      "id": "SEC-2026-052",
+      "timestamp": "2026-04-27T17:42:03Z",
+      "system": "payments-data-lake",
+      "severity": "critical",
+      "event": "Service account attempted export of restricted payment records",
+      "action": "Token revoked and forensic review opened",
+      "owner": "security"
+    },
+    {
+      "id": "SEC-2026-061",
+      "timestamp": "2026-05-09T02:31:44Z",
+      "system": "endpoint-detection",
+      "severity": "medium",
+      "event": "Unsigned binary quarantined on operations workstation",
+      "action": "Host isolated pending analyst review",
+      "owner": "security"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+Operations Weekly Report
+
+The fulfillment workflow processed 42,300 orders this week with a 98.4 percent on-time dispatch rate. The main bottleneck was a carrier integration timeout on May 6 that delayed 310 shipments.
+
+Inventory variance for the west warehouse fell from 2.1 percent to 0.8 percent after cycle-count automation was enabled. Finance should review the automation spend against the Q2 budget approval.
+
+The operations team recommends increasing weekend support coverage for the next product launch window and keeping the carrier timeout alert active for two more weeks.

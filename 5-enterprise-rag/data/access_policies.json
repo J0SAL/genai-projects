@@ -1,0 +1,82 @@
+{
+  "users": {
+    "alex_analyst": {
+      "name": "Alex Analyst",
+      "role": "employee"
+    },
+    "hannah_hr": {
+      "name": "Hannah HR",
+      "role": "hr"
+    },
+    "finley_finance": {
+      "name": "Finley Finance",
+      "role": "finance"
+    },
+    "sam_security": {
+      "name": "Sam Security",
+      "role": "security"
+    },
+    "priya_compliance": {
+      "name": "Priya Compliance",
+      "role": "compliance"
+    },
+    "olivia_ops": {
+      "name": "Olivia Operations",
+      "role": "operations"
+    },
+    "avery_admin": {
+      "name": "Avery Admin",
+      "role": "admin"
+    }
+  },
+  "source_policies": [
+    {
+      "pattern": "*hr*",
+      "department": "hr",
+      "sensitivity": "confidential",
+      "allowed_roles": ["hr", "compliance", "admin"]
+    },
+    {
+      "pattern": "*finance*",
+      "department": "finance",
+      "sensitivity": "restricted",
+      "allowed_roles": ["finance", "admin"]
+    },
+    {
+      "pattern": "*security*",
+      "department": "security",
+      "sensitivity": "restricted",
+      "allowed_roles": ["security", "compliance", "admin"]
+    },
+    {
+      "pattern": "*log*",
+      "department": "security",
+      "sensitivity": "restricted",
+      "allowed_roles": ["security", "compliance", "admin"]
+    },
+    {
+      "pattern": "*compliance*",
+      "department": "compliance",
+      "sensitivity": "confidential",
+      "allowed_roles": ["compliance", "admin"]
+    },
+    {
+      "pattern": "*audit*",
+      "department": "compliance",
+      "sensitivity": "confidential",
+      "allowed_roles": ["compliance", "admin"]
+    },
+    {
+      "pattern": "*operations*",
+      "department": "operations",
+      "sensitivity": "internal",
+      "allowed_roles": ["operations", "finance", "admin"]
+    },
+    {
+      "pattern": "*",
+      "department": "general",
+      "sensitivity": "internal",
+      "allowed_roles": ["employee", "admin"]
+    }
+  ]
+}

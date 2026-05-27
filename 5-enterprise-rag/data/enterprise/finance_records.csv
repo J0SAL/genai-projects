@@ -1,0 +1,6 @@
+id,quarter,department,revenue_usd,expense_usd,risk_note
+FIN-001,Q1,Cloud Platform,1840000,1215000,Margin pressure from reserved instance underutilization
+FIN-002,Q1,Customer Success,620000,540000,Renewal discounting exceeded policy threshold
+FIN-003,Q2,Cloud Platform,2110000,1330000,Revenue growth driven by enterprise analytics contracts
+FIN-004,Q2,Operations,790000,610000,Warehouse automation spend requires CFO review
+FIN-005,Q3,Security,430000,515000,Incident response contractor costs exceeded forecast

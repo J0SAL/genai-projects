@@ -1,0 +1,7 @@
+Enterprise HR Policy Summary
+
+The hybrid work policy allows eligible employees to work remotely up to three days per week with manager approval. Employees handling confidential personnel data must use managed devices and approved VPN access.
+
+Performance improvement plans are confidential HR records. Managers may view records only for their direct reports. Compliance officers may review anonymized policy adherence data during audits.
+
+Salary bands, medical accommodation details, and employee relations investigations are classified as confidential and are restricted to HR, compliance, and administrators.
