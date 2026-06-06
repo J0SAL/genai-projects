@@ -10,4 +10,6 @@
 
 4.2. [Finetuning LLM](https://github.com/J0SAL/genai-projects/tree/main/4.2-finetune-ollama) - Finetuning LLM with custom data, and loading it on ollama
 
-5.4. [Enterprise RAG](https://github.com/J0SAL/genai-projects/tree/main/5-enterprise-rag) - role based q&a with any documents
+5. [Enterprise RAG](https://github.com/J0SAL/genai-projects/tree/main/5-enterprise-rag) - role based q&a with any documents
+
+5. [Agent from Scratch](https://github.com/J0SAL/genai-projects/tree/main/6-agents_from_scratch) - agents from scratch using py and hf models
