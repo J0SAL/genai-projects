@@ -12,5 +12,8 @@
 
 5. [Enterprise RAG](https://github.com/J0SAL/genai-projects/tree/main/5-enterprise-rag) - role based q&a with any documents
 
-5. [Agent from Scratch](https://github.com/J0SAL/genai-projects/tree/main/6-agents_from_scratch) - agents from scratch using py and hf models
-6. [Chroma-DB / Vector DBs](https://github.com/J0SAL/genai-projects/tree/main/7_chroma_db) - implementing crud in vector db using Chroma
+6. [Agent from Scratch](https://github.com/J0SAL/genai-projects/tree/main/6-agents_from_scratch) - agents from scratch using py and hf models
+   
+7. [Chroma-DB / Vector DBs](https://github.com/J0SAL/genai-projects/tree/main/7_chroma_db) - implementing crud in vector db using Chroma
+
+8. [Research Multi Agent](https://github.com/J0SAL/genai-projects/blob/main/8-multi-agent-research/) - implementing dynamic research multi-agent in py
